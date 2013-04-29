@@ -1,0 +1,69 @@
+# Optimizations
+	Header unset Etag
+	Header unset Last-Modified
+	# This is removing of any other Vary
+	Header set Vary "Accept-Encoding"
+
+# Handle URLs
+	RewriteEngine on
+
+	# Apache, stop double gzipping my files!
+	# I'll deal with gzipping myself, mkay?
+	RewriteRule . - [E=no-gzip:1]
+
+	# Fix for Apache 1. Hardcoding is bad.
+	RewriteRule ^(3s|dashboard)\.php$ - [L]
+
+	# Don't loop
+	RewriteCond %{ENV:REDIRECT_THREES_FINISH} !^$
+	RewriteRule ^ - [L]
+
+	# Hide some stuff
+	RewriteRule ^table\.json 3s.php?404 [L]
+
+	# Developer dashboard
+	RewriteRule ^$ dashboard.php [L,E=THREES_FINISH:1]
+
+	# See if there's a static file like that
+	# Return with Apache, if there is
+
+	# Hack alert!
+	# I would simple add [DPI] at the end of this rule, to avoid
+	# stupid pathinfo, but some older Apaches don't like [DPI].
+	# To workaround that, further down the road two rules
+	# (adding ".gz" and removing "tmp")
+	# have slashes at their matching ends instead of $.
+	# Keep that in mind.
+
+	RewriteRule ^(.+)$ tmp/$1
+
+		# Directives for Apache static handling
+		<FilesMatch "\.(css|js)(\.gz)?$">
+			Header set Cache-Control: max-age=31449600
+			ExpiresActive on
+			ExpiresDefault "access plus 364 days"
+		</FilesMatch>
+		<Files *.gz>
+			Header set Content-Encoding: gzip
+			Header unset Content-Length
+		</Files>
+		<Files *.css.gz>
+			ForceType text/css
+		</Files>
+		<Files *.js.gz>
+			ForceType application/javascript
+		</Files>
+
+		# Serve gzip if possible
+		RewriteCond %{HTTP:Accept-encoding} gzip
+	  	RewriteCond %{REQUEST_FILENAME}\.gz -s
+		RewriteRule ^(.+)/ $1.gz [L,E=THREES_FINISH:1]
+		
+		# Or serve normal
+		RewriteCond %{REQUEST_FILENAME} -s
+		RewriteRule ^ - [L,E=THREES_FINISH:1]	
+
+	# Well, there is not. Let us remove the tmp, and go back to our engine.
+	RewriteRule ^tmp/(.+)/ 3s.php?$1 [L,E=THREES_FINISH:1]
+	# Fallback due to [DPI] hack above
+	RewriteRule ^tmp/(.+) 3s.php?$1 [L,E=THREES_FINISH:1]

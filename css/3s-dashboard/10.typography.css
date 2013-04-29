@@ -1,0 +1,10 @@
+/*
+ * This is but an example
+ */
+body { line-height: 1.3em; word-spacing: 0.25em }
+abbr { font-size: 85%; letter-spacing: 0.1em }
+h1, h2, h3, h4, h5, h6 { font-weight: normal }
+h1 { font-size: 120%; margin-bottom: 0.5em }
+p { margin-bottom: 1em; max-width: 45em; }
+address { font-style: normal }
+p img { vertical-align: text-bottom }

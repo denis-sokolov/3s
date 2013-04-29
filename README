@@ -1,0 +1,5 @@
+3s handles all your CSS and JS for your PHP projects, giving you a set of significant advantages.
+You get to use LESS, a superset language for CSS containing many useful enhancements.
+All vendor prefixes for CSS3 will be added automatically and in a smart way.
+No more hassle with CSS sprites, they are generated automatically.
+All your CSS and JS are combined, minified, encoded and perfectly cached, for the perfect performance.
