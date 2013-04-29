@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>3s</title>
+<link rel=stylesheet href="base.css">
+<link rel=stylesheet href="3s.css">
+<div class=container>
+	<h1>
+		3s
+	</h1>
+	<p>
+		3s handles all your <abbr>CSS</abbr> and <abbr>JS</abbr>
+		for your <abbr>PHP</abbr> projects, giving
+		you a set of significant advantages.
+	</p>
+	<ul>
+		<li>
+			<p>
+				You get to use <strong><abbr>LESS</abbr></strong>, a superset language for
+				CSS containing many useful enhancements.
+			</p>
+		</li>
+		<li>
+			<p>
+				All <strong>vendor prefixes</strong> for <abbr>CSS3</abbr> will be
+				added automatically and in a smart way.
+			</p>
+		</li>
+		<li>
+			<p>
+				No more hassle with <strong>CSS sprites</strong>,
+				they are generated automatically.
+			</p>
+		</li>
+		<li>
+			<p>
+				All your <abbr>CSS</abbr> and <abbr>JS</abbr> are combined,
+				minified, encoded and perfectly cached,
+				for the perfect <strong>performance</strong>.
+			</p>
+		</li>
+	</ul>
+
+	<h2 id="contents">Contents</h2>
+	<ol>
+		<li><a href="#usage">Simple usage</a></li>
+		<li>
+			<a href="#features">Features</a>
+			<ol>
+				<li><a href="#less"><abbr>LESS</abbr> syntax</a></li>
+				<li><a href="#css3"><abbr>CSS3</abbr> vendor prefixes</a></li>
+				<li><a href="#sprites"><abbr>CSS</abbr> sprites</a></li>
+				<li><a href="#performance">Performance</a></li>
+			</ol>
+		</li>
+		<li><a href="#production">Production usage</a></li>
+		<li><a href="#configuration">Configuration</a></li>
+		<li><a href="#meta">Meta-information</a></li>
+	</ol>
+
+	<h2 id="usage">Simple usage</h2>
+	<ol>
+		<li>
+			<p>
+				Make sure you are running Apache server
+				with <abbr>PHP</abbr> at least 5.2 and
+				<code>mod_rewrite</code> enabled.
+			</p>
+		</li>
+		<li>
+			<p>
+				Download 3s.
+				At the <a href="https://bitbucket.org/Akral/3s">project code page</a>
+				look for the &lsquo;get source&rsquo; link.
+			</p>
+		</li>
+		<li>
+			<p>
+				Put 3s in the root of your project, along with
+				<code>css</code> and <code>js</code> folders:
+			</p>
+			<code class="block">project/
+   3s/
+   css/
+      main/
+         00.reset.css
+         20.stuff.css
+   js/
+      main/
+         00.jquery.js
+         15.common.js
+   index.php</code>
+			<p>
+				<code>main</code> is a <em>bundle</em> name.
+				All files in a bundle will be combined in alphabetical order.
+				That&rsquo;s why it&rsquo;s advisory to prepend the names
+				with digits to control the order.
+			</p>
+			<p class="note">
+				If you are using a Front Controller, make sure it passes
+				all requests to <code>3s/</code> untouched.
+			</p>
+		</li>
+		<li>
+			<p>
+				Change tags in your <abbr>HTML</abbr>:
+			</p>
+			<code class="block html4strict"><span class="sc2">&lt;<a href="http://december.com/html/4/element/link.html"><span class="kw2">link</span></a> <span class="kw3">rel</span><span class="sy0">=</span>stylesheet <span class="kw3">href</span><span class="sy0">=</span><span class="st0">&quot;css/reset.css&quot;</span>&gt;</span><br />
+<span class="sc2">&lt;<a href="http://december.com/html/4/element/link.html"><span class="kw2">link</span></a> <span class="kw3">rel</span><span class="sy0">=</span>stylesheet <span class="kw3">href</span><span class="sy0">=</span><span class="st0">&quot;css/stuff.css&quot;</span>&gt;</span><br />
+<span class="sc2">&lt;<a href="http://december.com/html/4/element/script.html"><span class="kw2">script</span></a> <span class="kw3">src</span><span class="sy0">=</span><span class="st0">&quot;js/jquery.js&quot;</span>&gt;&lt;<span class="sy0">/</span><a href="http://december.com/html/4/element/script.html"><span class="kw2">script</span></a>&gt;</span><br />
+<span class="sc2">&lt;<a href="http://december.com/html/4/element/script.html"><span class="kw2">script</span></a> <span class="kw3">src</span><span class="sy0">=</span><span class="st0">&quot;js/common.js&quot;</span>&gt;&lt;<span class="sy0">/</span><a href="http://december.com/html/4/element/script.html"><span class="kw2">script</span></a>&gt;</span></code>
+			<p>
+				to
+			</p>
+			<code class="block html4strict"><span class="sc2">&lt;<a href="http://december.com/html/4/element/link.html"><span class="kw2">link</span></a> <span class="kw3">rel</span><span class="sy0">=</span>stylesheet <span class="kw3">href</span><span class="sy0">=</span><span class="st0">&quot;3s/main.css&quot;</span>&gt;</span><br>
+			<span class="sc2">&lt;<a href="http://december.com/html/4/element/script.html"><span class="kw2">script</span></a> <span class="kw3">src</span><span class="sy0">=</span><span class="st0">&quot;3s/main.js&quot;</span>&gt;&lt;<span class="sy0">/</span><a href="http://december.com/html/4/element/script.html"><span class="kw2">script</span></a>&gt;</span></code>
+		</li>
+		<li id="css-urls">
+			If you use background images in your CSS,
+			other than sprites generated with 3s, or other resources,
+			like fonts, you probably have to update their paths.
+			Assume that <code>url</code> in <abbr>CSS</abbr>
+			is always project-root relative.
+			In other words, given this project structure:
+			<code class="block">project/
+   3s/
+   css/
+      main/
+         images.css
+   img/
+      picture.png
+   index.php</code>
+			In <code>images.css</code> use
+			<code class=block>.foo {
+   background-image: url('img/picture.png');
+}</code>
+		</li>
+	</ol>
+	<p>
+		Now you can use all 3s features in your <abbr>CSS</abbr> and <abbr>JS</abbr>.
+	</p>
+
+	<h2 id="features">Features</h2>
+	<h3 id="less"><abbr>LESS</abbr></h3>
+	<p>
+		The biggest improvement that is added is, without doubt,
+		<abbr>LESS</abbr> syntax.
+		It allows to use indented blocks, expressions,
+		variables and other useful things in your <abbr>CSS</abbr>.
+		For instance, this:
+	</p>
+	<code class="block css">article <span class="br0">&#123;</span><br />
+&nbsp; h1 <span class="br0">&#123;</span> <span class="kw1">font-size</span><span class="sy0">:</span> <span class="re3">120%</span> <span class="br0">&#125;</span><br />
+&nbsp; <span class="re1">.date</span> <span class="br0">&#123;</span> <span class="kw1">font-style</span><span class="sy0">:</span> <span class="kw2">italic</span> <span class="br0">&#125;</span><br />
+&nbsp; <span class="re1">.comments</span> <span class="br0">&#123;</span> <span class="kw1">display</span><span class="sy0">:</span> inline-block <span class="br0">&#125;</span><br />
+<span class="br0">&#125;</span></code>
+	<p>
+		Becomes this:
+	</p>
+	<code class="block css">article h1 <span class="br0">&#123;</span> <span class="kw1">font-size</span><span class="sy0">:</span> <span class="re3">120%</span> <span class="br0">&#125;</span><br />
+article <span class="re1">.date</span> <span class="br0">&#123;</span> <span class="kw1">font-style</span><span class="sy0">:</span> <span class="kw2">italic</span> <span class="br0">&#125;</span><br />
+article <span class="re1">.comments</span> <span class="br0">&#123;</span> <span class="kw1">display</span><span class="sy0">:</span> inline-block <span class="br0">&#125;</span></code>
+	<p>
+		Take a look at
+		<a href="http://leafo.net/lessphp/docs/#the_language"><abbr>LESS</abbr> syntax documentation</a>
+		for more details.
+	</p>
+
+	<h3 id="css3"><abbr>CSS3</abbr> vendor prefixes</h3>
+	<p>
+		While it is common practice to use <abbr>LESS</abbr> mixins
+		to add vendor prefixes to your <abbr>CSS</abbr>,
+		3s allows you to stop worrying about that.
+	</p>
+	<p>
+		3s will parse your <abbr>CSS</abbr> and find any <abbr>CSS3</abbr>
+		declarations that require vendor prefixes and add any that
+		are required for you.
+		So just write:
+	</p>
+	<code class="block css"><span class="re1">.actions</span> <span class="br0">&#123;</span> opacity<span class="sy0">:</span> <span class="nu0">0</span><span class="sy0">;</span> transition<span class="sy0">:</span> opacity 0.5s <span class="br0">&#125;</span><br />
+li<span class="re2">:hover </span><span class="sy0">&gt;</span> <span class="re1">.actions</span> <span class="br0">&#123;</span> opacity<span class="sy0">:</span> <span class="nu0">1</span><span class="sy0">;</span> <span class="br0">&#125;</span></code>
+	<p>
+		All required <code>opacity</code> and <code>transition</code> prefixes
+		will be added automatically.
+	</p>
+	<p>
+		And don&rsquo;t worry if you have already added some vendor prefixes yourself
+		or you have not added the prefixless declaration.
+		The following code will work as expected:
+	</p>
+	<code class="block css">foo <span class="br0">&#123;</span><br />
+&nbsp; -webkit-transition<span class="sy0">:</span> opacity 0.5s<span class="sy0">;</span><br />
+&nbsp; -moz-transition<span class="sy0">:</span> opacity 0.5s<span class="sy0">;</span><br />
+<span class="br0">&#125;</span></code>
+	<p>
+		It will still be transformed to
+	</p>
+	<code class="block css">foo <span class="br0">&#123;</span><br />
+&nbsp; -webkit-transition<span class="sy0">:</span> opacity 0.5s<span class="sy0">;</span><br />
+&nbsp; -moz-transition<span class="sy0">:</span> opacity 0.5s<span class="sy0">;</span><br />
+&nbsp; -o-transition<span class="sy0">:</span> opacity 0.5s<span class="sy0">;</span><br />
+&nbsp; transition<span class="sy0">:</span> opacity 0.5s<span class="sy0">;</span><br />
+<span class="br0">&#125;</span></code>
+	<p>
+		For full details on transformations,
+		<a href="https://bitbucket.org/Akral/3s/src">browse the code</a>
+		to <code>inc/css3.php</code>.
+		Variable <code>$rules</code> will show the list of added prefixes.
+		Method <code>special</code> will show additional, more complicated transformations.
+		For example, as of 2012–01–01, that consists of MS filters for opacity and text shadow.
+		Finally, 3s tries to transform background gradients, but I can&rsquo;t say
+		it&rsquo;s doing the best job.
+	</p>
+
+	<h3 id="sprites"><abbr>CSS</abbr> sprites</h3>
+	<p>
+		3s can generate sprites automatically.
+		Make sure your <code>css</code> folder structure looks like this:
+	</p>
+	<code class="block">css/
+   main/
+      sprite-v/
+         ok.png
+         error.png
+      00.reset.css
+      20.stuff.css</code>
+	<p>
+		<code>sprite-v</code> is a constant which refers to a
+		vertical sprite for this <em>bundle</em>.
+		Horizontal sprites are <strong>not supported</strong> yet
+		(<a href="https://bitbucket.org/Akral/3s/issue/20/horizontal-sprites">issue 20</a>).
+	</p>
+	<p>
+		Then in your <abbr>CSS</abbr> you can refer to the icons as normal:
+	</p>
+	<code class="block css"><span class="re1">.success</span> <span class="br0">&#123;</span> <span class="kw1">background</span><span class="sy0">:</span> <span class="kw2">transparent</span> <span class="kw2">url</span><span class="br0">&#40;</span><span class="st0">'sprite-v/ok.png'</span><span class="br0">&#41;</span> <span class="kw2">no-repeat</span> <span class="kw1">left</span> <span class="br0">&#125;</span><br />
+<span class="re1">.error</span> <span class="br0">&#123;</span> <span class="kw1">background</span><span class="sy0">:</span> <span class="kw2">transparent</span> <span class="kw2">url</span><span class="br0">&#40;</span><span class="st0">'sprite-v/error.png'</span><span class="br0">&#41;</span> <span class="kw2">no-repeat</span> <span class="kw1">right</span> <span class="re3">5px</span> <span class="br0">&#125;</span></code>
+	<p>
+		Icons in the folder will be combined and background image url
+		will be changed to a sprite url and the vertical position
+		will be adjusted accordingly.
+	</p>
+	<p id="sprite-padding">
+		Default padding between icons is 30px.
+		If you need a different padding for a certain icon, name it like this:
+		<code>icon.50.png</code>.
+		3s then will keep 50 pixels around the icon.
+	</p>
+
+	<h3 id="performance">Performance</h3>
+	<p>
+		3s has been built with
+		<a href="http://developer.yahoo.com/performance/rules.html">Yahoo! best practices</a>
+		and
+		<a href="http://code.google.com/speed/articles/">Google Speed</a> guidelines
+		in mind.
+	</p>
+	<p>
+		3s guarantees to serve everything in one <abbr>HTTP</abbr> request,
+		with gzip encoding and proper cache headers.
+	</p>
+	<p>
+		3s also minifies your files by removing unneeded whitespace.
+	</p>
+
+	<h2 id="production">Production usage</h2>
+	<p>
+		If you are preparing to use 3s on production, you
+		need to do some adjustments.
+	</p>
+	<ol>
+		<li>
+			<p>
+				Make <code>3s/tmp</code> folder writable.
+				This will enable caching of generated files.
+			</p>
+		</li>
+		<li>
+			<p>
+				To avoid an expensive <abbr>HTTP</abbr> redirect,
+				edit your <abbr>HTML</abbr> template.
+			</p>
+			<code class="block html4strict php"><span class="sc2">&lt;<a href="http://december.com/html/4/element/link.html"><span class="kw2">link</span></a> <span class="kw3">rel</span><span class="sy0">=</span>stylesheet <span class="kw3">href</span><span class="sy0">=</span><span class="st0">&quot;3s/main.css&quot;</span>&gt;</span><br />
+<span class="sc2">&lt;<a href="http://december.com/html/4/element/script.html"><span class="kw2">script</span></a> <span class="kw3">src</span><span class="sy0">=</span><span class="st0">&quot;3s/main.js&quot;</span>&gt;&lt;<span class="sy0">/</span><a href="http://december.com/html/4/element/script.html"><span class="kw2">script</span></a>&gt;</span></code>
+			<p>
+				Use paths generated by 3s:
+			</p>
+<code class="block html4strict php"><span class="kw2">&lt;?php</span><br />
+&nbsp; <span class="kw1">require_once</span> <span class="st_h">'3s/3s.php'</span><span class="sy0">;</span><br />
+&nbsp; <span class="re0">$ts</span> <span class="sy0">=</span> <span class="kw2">new</span> ThreeS<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span><br />
+<span class="kw2">?&gt;</span><br />
+<span class="sc2">&lt;</span><a href="http://december.com/html/4/element/link.html"><span class="kw2">link</span></a> <span class="kw3">rel</span><span class="sy0">=</span>stylesheet <span class="kw3">href</span><span class="sy0">=</span><span class="st0">&quot;3s/</span><span class="kw2">&lt;?php</span> <span class="re0">$ts</span><span class="sy0">-&gt;</span><span class="me1">css</span><span class="br0">&#40;</span><span class="st_h">'main'</span><span class="br0">&#41;</span><span class="sy0">;</span> <span class="sy1">?&gt;</span><span class="sy0">&gt;</span><br />
+<span class="sc2">&lt;</span><a href="http://december.com/html/4/element/script.html"><span class="kw2">script</span></a> <span class="kw3">src</span><span class="sy0">=</span><span class="st0">&quot;3s/</span><span class="kw2">&lt;?php</span> <span class="re0">$ts</span><span class="sy0">-&gt;</span><span class="me1">js</span><span class="br0">&#40;</span><span class="st_h">'main'</span><span class="br0">&#41;</span><span class="sy0">;</span> <span class="sy1">?&gt;</span><span class="st0">&quot;</span>&gt;&lt;<span class="sy0">/</span><a href="http://december.com/html/4/element/script.html"><span class="kw2">script</span></a><span class="sc2">&gt;</span><br /></code>
+		</li>
+		<li>
+			<p>
+				To make the final, ultimate step in caching,
+				create a <code>3s/config.local.php</code> file and
+				put the following in it:
+			</p>
+			<code class="block php"><span class="kw2">&lt;?php</span><br /><span class="re0">$config</span><span class="br0">&#91;</span><span class="st_h">'cache'</span><span class="br0">&#93;</span><span class="br0">&#91;</span><span class="st_h">'autoinvalidate'</span><span class="br0">&#93;</span> <span class="sy0">=</span> <span class="kw4">false</span><span class="sy0">;</span></code>
+			<p>
+				Now the 3s will not rescan <code>css</code> and <code>js</code>
+				directories every time.
+			</p>
+			<p>
+				Of course, this means that to see changes on your website after
+				changing <abbr>CSS</abbr> or <abbr>JS</abbr> you will need
+				to clear the <code>tmp</code> folder.
+			</p>
+		</li>
+	</ol>
+
+	<h2 id="configuration">Configuration</h2>
+	<p>
+		Generally, all existing configuration is stored in
+		<code>3s/config.php</code>.
+		Do not edit that file, but rather create a file
+		<code>3s/config.local.php</code> and add singular lines to it like this:
+	</p>
+	<code class="php"><span class="kw2">&lt;?php</span><br />
+<span class="re0">$config</span><span class="br0">&#91;</span><span class="st_h">'cache'</span><span class="br0">&#93;</span><span class="br0">&#91;</span><span class="st_h">'autoinvalidate'</span><span class="br0">&#93;</span> <span class="sy0">=</span> <span class="kw4">false</span><span class="sy0">;</span><br />
+<span class="re0">$config</span><span class="br0">&#91;</span><span class="st_h">'css'</span><span class="br0">&#93;</span><span class="br0">&#91;</span><span class="st_h">'pretty'</span><span class="br0">&#93;</span> <span class="sy0">=</span> <span class="kw4">true</span><span class="sy0">;</span></code>
+
+
+	<h3 id="errors">Errors</h3>
+	<p>
+		To check how the 3s is living,
+		you can check the dashboard.
+		Just enter the <abbr>URL</abbr> <code>.../3s/</code>
+		in your browser.
+	</p>
+	<p>
+		To help you debug your <abbr>CSS</abbr>
+		and <abbr>JS</abbr> problems, you may turn on
+		the <em>pretty</em> options in your config.
+	</p>
+
+	<h3 id="3slocation">3s location</h3>
+	<p>
+		You don&rsquo;t have to put 3s into the root folder of your project.
+		If you have a big project and would like to structure 3s differently,
+		put it anywhere.
+	</p>
+	<p>
+		3s will detect <code>css</code> and <code>js</code> folders up to
+		3 levels up, so your project structure may be like this:
+	</p>
+	<code class="block">project/
+   css/
+      main/
+         00.reset.css
+         20.stuff.css
+   inc/
+      3s/
+   js/
+      main/
+         00.jquery.js
+         15.common.js
+   index.php</code>
+	<p>
+		Naturally, you will need to update your front controller to pass
+		all requests to 3s.
+		Simply add something similar to this line to your .htaccess:
+	</p>
+	<code class="apache"><span class="kw1">RewriteRule</span> ^3s/<span class="br0">&#40;</span>.<span class="sy0">+</span><span class="br0">&#41;</span>$ inc/3s/$<span class="nu0">1</span> <span class="br0">&#91;</span>L,QSA<span class="br0">&#93;</span></code>
+
+	<h2 id="meta">Meta-information</h2>
+	<p>
+		License: <a href="//www.gnu.org/licenses/lgpl.html">LGPL</a>.
+	</p>
+	<p>
+		Code: <a href="https://github.com/SlikNL/3s">hosted on GitHub</a>.
+	</p>
+	<p>
+		Authors: <a href="http://sokolov.cc">Denis Sokolov</a> and <a href="http://slik.eu">Slik</a>.
+	</p>
+	<p class=note>
+		Third party libraries used:
+		<a href="http://leafo.net/lessphp">lessphp</a> by Leaf Corcoran,
+		<a href="https://github.com/rgrove/jsmin-php/">JSMin</a>
+			by Ryan Grove and Douglas Crockford,
+		JS Beautifier by Einars "elfz" Lielmanis.
+	</p>
+</div>
