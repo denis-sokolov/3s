@@ -1020,7 +1020,7 @@ class ThreeSCssHandler extends ThreeSBaseHandler
 		$data = $this->hook('pre-sprites', $data);
 		$this->sprites = $this->ts->handler((object) array(
 			'keyword' => $this->keyword,
-			'options' => array_merge($this->options, array('direction' => 'v')),
+			'options' => array_merge($this->options ?: [], array('direction' => 'v')),
 			'mtime' => 0,
 			'ext' => 'png',
 		));
