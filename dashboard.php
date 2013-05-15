@@ -78,7 +78,7 @@ set_exception_handler('exception_handler');
 			If this is a production environment,
 			please create a temporary directory
 			<code><?php
-				echo dirname(__FILE__).'/'.$t;
+				echo $t;
 			?></code>
 			and make it writable.
 		</p>
