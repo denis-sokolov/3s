@@ -1012,7 +1012,7 @@ class ThreeSCssHandler extends ThreeSBaseHandler
 		{
 			# Add ../../ to any url, as we will pretend our CSS lies in /
 			# It's important to keep this in mind when authoring CSS
-			return preg_replace('/url\s*\(\s*([\'"]?)\s*(?![a-z]{2,6}:\/\/)/', 'url(\1../../', $data);
+			return preg_replace('/url\s*\(\s*([\'"]?)\s*(?![a-z]{2,6}:\/\/)(?=[^\'")]+)/', 'url(\1../../', $data);
 		}
 
 	protected function sprites($data)
