@@ -51,7 +51,11 @@ class Display
 	protected function exceptionPublic(Exception $e)
 	{
 		if ($e instanceof ThreeS404Exception) {
-			header(' ', true, 404);
+			if (function_exists('http_response_code')) {
+				http_response_code(404);
+			} else {
+				header('X-Ignore-This: 1', true, 404);
+			}
 			die('404');
 		}
 
